@@ -36,6 +36,9 @@
 		ufshc1 = &ufshc_mem; /* Embedded UFS Slot */
 		pci-domain0 = &pcie0; /* PCIe0 domain */
 		pci-domain1 = &pcie1; /* PCIe1 domain */
+		/* #ifdef OPLUS_ARCH_EXTENDS */
+		i2c4 = &qupv3_se13_i2c;
+		/* OPLUS_ARCH_EXTENDS */
 	};
 
 	sram: sram@17D09400 {
@@ -410,10 +413,13 @@
 		reg = <0x0 0x85e00000 0x0 0x2100000>;
 	};
 
+	// #ifdef OPLUS_SENSOR_FEATURE
+	/* reg = <0x0 0x88000000 0x0 0x1900000>; */
 	slpi_mem: slpi_region@88000000 {
 		no-map;
 		reg = <0x0 0x88000000 0x0 0x1900000>;
 	};
+	// #endif OPLUS_SENSOR_FEATURE
 
 	cdsp_mem: cdsp_region@89900000 {
 		no-map;
@@ -2135,6 +2141,8 @@
 		phy-names = "ufsphy";
 		#reset-cells = <1>;
 
+	        qcom,prime-mask = <0x70>;
+	        qcom,silver-mask = <0x0f>;
 		lanes-per-direction = <2>;
 		dev-ref-clk-freq = <0>; /* 19.2 MHz */
 		clock-names =
@@ -3201,12 +3209,12 @@
 		status = "disabled";
 	};
 
+	//#ifdef OPLUS_FEATURE_FINGERPRINT
 	qcom,qbt_handler {
 		compatible = "qcom,qbt-handler";
-		qcom,ipc-gpio = <&tlmm 40 0>;
-		qcom,finger-detect-gpio = <&tlmm 41 0>;
-		qcom,intr2-gpio = <&tlmm 42 0>;
+		status = "disabled";
 	};
+	//#endif /*OPLUS_FEATURE_FINGERPRINT*/
 
 	wlan: qcom,cnss-qca6490@b0000000 {
 		compatible = "qcom,cnss-qca6490";
@@ -3397,7 +3405,7 @@
 				<0x146A8000 0x146A8000 0x2000>;
 			qcom,iommu-dma = "fastmap";
 			dma-coherent;
-			qcom,ipa-q6-smem-size = <45056>;
+			qcom,ipa-q6-smem-size = <36864>;
 		};
 
 		ipa_smmu_wlan: ipa_smmu_wlan {
@@ -3447,6 +3455,7 @@
 #include "waipio-coresight.dtsi"
 #include "waipio-dma-heaps.dtsi"
 #include "waipio-debug.dtsi"
+#include "waipio-eva.dtsi"
 #include "waipio-pcie.dtsi"
 #include "msm-rdbg.dtsi"
 #include "waipio-gpu.dtsi"
@@ -3488,7 +3497,11 @@
 	nq@64 {
 		compatible = "rtc6226";
 		reg = <0x64>;
-		fmint-gpio = <&tlmm 44 0>;
+//#ifndef OPLUS_FEATURE_CHG_BASIC /* sjc Modify for temp */
+		//fmint-gpio = <&tlmm 44 0>;
+//#else
+		fmint-gpio = <&tlmm 12 0>;
+//#endif
 		vdd-supply = <&L7E>;
 		rtc6226,vdd-supply-voltage = <2800000 2800000>;
 		rtc6226,vdd-load = <15000>;
