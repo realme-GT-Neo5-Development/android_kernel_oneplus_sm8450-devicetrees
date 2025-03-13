@@ -1,30 +1,9 @@
 include $(srctree)/$(src)/../../oplus/dtb-selection.mk
 
-ifeq ($(CONFIG_ARCH_WAIPIO), y)
-dtbo-y += waipio-mmrm.dtbo
-dtbo-y += waipio-mmrm-test.dtbo
-dtbo-y += waipio-v2-mmrm.dtbo
-dtbo-y += waipio-v2-mmrm-test.dtbo
-endif
+dtbo-$(CONFIG_ARCH_CAPE) += $(if $(oplus-dtb-cape),cape-mmrm.dtbo)
+dtbo-$(CONFIG_ARCH_WAIPIO) += $(if $(oplus-dtb-waipio),waipio-mmrm.dtbo waipio-mmrm-test.dtbo waipio-v2-mmrm.dtbo waipio-v2-mmrm-test.dtbo)
 
-ifeq ($(CONFIG_ARCH_NEO), y)
-dtbo-y += neo-mmrm.dtbo
-dtbo-y += neo-mmrm-test.dtbo
-endif
-
-ifeq ($(CONFIG_ARCH_CAPE), y)
-dtbo-y += cape-mmrm.dtbo
-endif
-
-ifeq ($(CONFIG_ARCH_DIWALI), y)
-dtbo-y += diwali-mmrm.dtbo
-endif
-
-ifneq ($(oplus-dtb-opt-out),)
-dtbo-y := $(filter cape-mmrm.dtbo waipio-mmrm.dtbo waipio-mmrm-test.dtbo waipio-v2-mmrm.dtbo waipio-v2-mmrm-test.dtbo,$(dtbo-y))
-dtb-y :=
-endif
-
+dtbo-y := $(strip $(call oplus-dtb-uniq,$(dtbo-y)))
 always-y	:= $(dtb-y) $(dtbo-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb *.dtbo

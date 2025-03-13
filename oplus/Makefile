@@ -1,3 +1,11 @@
+include $(srctree)/$(src)/dtb-selection.mk
+
+oplus-base-dtbo-OVALTINE := $(if $(filter y,$(CONFIG_ARCH_CAPE)),ovaltine-21841-cape-overlay.dtbo ovaltine-21845-cape-overlay.dtbo)
+oplus-base-dtbo-SENNA := $(if $(filter y,$(CONFIG_ARCH_CAPE)),senna-22623-ukee-overlay.dtbo senna-22624-cape-overlay.dtbo senna-22625-cape-overlay.dtbo)
+oplus-base-dtbo-UDON := $(if $(filter y,$(CONFIG_ARCH_CAPE)),udon-22803-cape-overlay.dtbo)
+oplus-base-dtbo-FERRARI := $(if $(filter y,$(CONFIG_ARCH_WAIPIO)),ferrari-21631-waipio-overlay.dtbo)
+oplus-base-dtbo-WLY := $(if $(filter y,$(CONFIG_ARCH_WAIPIO)),wly-20846-waipio-overlay-EVB.dtbo wly-20846-waipio-overlay-preT0.dtbo wly-20846-waipio-overlay.dtbo wly-2084A-waipio-overlay-EVB.dtbo wly-2084A-waipio-overlay-preT0.dtbo wly-2084A-waipio-overlay.dtbo)
+
 ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
 dtbo-$(CONFIG_ARCH_CAPE) +=  \
 	kunpeng-21009-cape-overlay.dtbo \
@@ -66,6 +74,9 @@ kunpeng-21009-waipio-overlay.dtbo-base := waipio.dtb waipiop.dtb waipio-v2.dtb w
 ferrari-21631-waipio-overlay.dtbo-base := waipio.dtb waipiop.dtb waipio-v2.dtb waipiop-v2.dtb
 endif
 
-always-y	:= $(dtb-y)
+dtbo-y := $(strip $(call oplus-dtb-uniq,$(filter $(foreach family,$(oplus-dtb-selected),$(oplus-base-dtbo-$(family))),$(dtbo-y))))
+dtb-y :=
+
+always-y	:= $(dtb-y) $(dtbo-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb *.dtbo

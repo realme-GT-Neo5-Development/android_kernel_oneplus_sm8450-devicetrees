@@ -1,19 +1,10 @@
 include $(srctree)/$(src)/../../oplus/dtb-selection.mk
 
-ifeq ($(CONFIG_ARCH_WAIPIO), y)
-dtbo-y += waipio-eva.dtbo
-endif
+dtbo-$(CONFIG_ARCH_CAPE) += $(if $(oplus-dtb-cape),cape-eva.dtbo)
+dtbo-$(CONFIG_ARCH_CAPE) += $(if $(oplus-dtb-ukee),ukee-eva.dtbo)
+dtbo-$(CONFIG_ARCH_WAIPIO) += $(if $(oplus-dtb-waipio),waipio-eva.dtbo)
 
-ifeq ($(CONFIG_ARCH_CAPE), y)
-dtbo-y += ukee-eva.dtbo
-dtbo-y += cape-eva.dtbo
-endif
-
-ifneq ($(oplus-dtb-opt-out),)
-dtbo-y := $(filter cape-eva.dtbo ukee-eva.dtbo waipio-eva.dtbo,$(dtbo-y))
-dtb-y :=
-endif
-
+dtbo-y := $(strip $(call oplus-dtb-uniq,$(dtbo-y)))
 always-y	:= $(dtb-y) $(dtbo-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb *.dtbo

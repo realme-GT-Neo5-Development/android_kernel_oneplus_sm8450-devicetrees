@@ -1,3 +1,11 @@
+include $(srctree)/$(src)/../../../oplus/dtb-selection.mk
+
+oplus-audio-dtbo-OVALTINE := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../cape-audio.dtbo ovaltine-21841-audio-cape-overlay.dtbo)
+oplus-audio-dtbo-SENNA := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../cape-audio.dtbo senna-22623-audio-cape-overlay.dtbo senna-22624-audio-cape-overlay.dtbo senna-22625-audio-cape-overlay.dtbo)
+oplus-audio-dtbo-UDON := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../cape-audio.dtbo udon-22803-audio-cape-overlay.dtbo)
+oplus-audio-dtbo-FERRARI := $(if $(filter y,$(CONFIG_ARCH_WAIPIO)),../waipio-audio.dtbo ferrari-21631-audio-waipio-overlay.dtbo)
+oplus-audio-dtbo-WLY := $(if $(filter y,$(CONFIG_ARCH_WAIPIO)),../waipio-audio.dtbo wly-20846-audio-waipio-overlay.dtbo)
+
 DTC_INCLUDE += $(srctree)/../sm8450-modules/qcom/opensource/audio-kernel/include
 KBUILD_DTC_INCLUDE += $(srctree)/../sm8450-modules/qcom/opensource/audio-kernel/include
 
@@ -25,6 +33,9 @@ dtbo-$(CONFIG_ARCH_WAIPIO) += wly-20846-audio-waipio-overlay.dtbo \
                        ferrari-21631-audio-waipio-overlay.dtbo \
                        kunpeng-21009-audio-waipio-overlay.dtbo \
                        jennie-21605-audio-waipio-overlay.dtbo
+
+dtbo-y := $(strip $(call oplus-dtb-uniq,$(filter $(foreach family,$(oplus-dtb-selected),$(oplus-audio-dtbo-$(family))),$(dtbo-y))))
+dtb-y :=
 
 always-y    := $(dtb-y) $(dtbo-y)
 subdir-y    := $(dts-dirs)

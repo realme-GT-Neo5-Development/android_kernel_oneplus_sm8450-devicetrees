@@ -1,12 +1,10 @@
 include $(srctree)/$(src)/../../oplus/dtb-selection.mk
 
-dtbo-y += diwali-cvp.dtbo
-
-ifneq ($(oplus-dtb-opt-out),)
+# None of the supported families requires the Diwali CVP overlay.
 dtbo-y :=
 dtb-y :=
-endif
 
+dtbo-y := $(strip $(call oplus-dtb-uniq,$(dtbo-y)))
 always-y	:= $(dtb-y) $(dtbo-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb *.dtbo

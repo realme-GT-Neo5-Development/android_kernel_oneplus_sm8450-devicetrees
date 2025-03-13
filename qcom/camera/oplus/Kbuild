@@ -1,3 +1,11 @@
+include $(srctree)/$(src)/../../../oplus/dtb-selection.mk
+
+oplus-camera-dtbo-OVALTINE := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../cape-camera.dtbo ovaltine-21841-camera-cape-overlay.dtbo)
+oplus-camera-dtbo-SENNA := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../cape-camera.dtbo ../ukee-camera.dtbo senna-22624-camera-cape-overlay.dtbo senna-22625-camera-cape-overlay.dtbo senna_22623-camera-ukee-overlay.dtbo)
+oplus-camera-dtbo-UDON := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../cape-camera.dtbo udon_22803-camera-cape-overlay.dtbo)
+oplus-camera-dtbo-FERRARI := $(if $(filter y,$(CONFIG_ARCH_WAIPIO)),../waipio-camera.dtbo ferrari-21631-camera-waipio-overlay.dtbo)
+oplus-camera-dtbo-WLY := $(if $(filter y,$(CONFIG_ARCH_WAIPIO)),../waipio-camera.dtbo wly-20846-camera-waipio-overlay-EVB.dtbo wly-20846-camera-waipio-overlay-preT0.dtbo wly-20846-camera-waipio-overlay.dtbo)
+
 DTC_INCLUDE += $(srctree)/../sm8450-modules/qcom/opensource/camera-kernel
 KBUILD_DTC_INCLUDE += $(srctree)/../sm8450-modules/qcom/opensource/camera-kernel
 
@@ -36,6 +44,9 @@ dtbo-$(CONFIG_ARCH_WAIPIO) += udon_22803-camera-waipio-overlay.dtbo
 dtbo-$(CONFIG_ARCH_WAIPIO) += jennie_21606-camera-waipio-overlay.dtbo
 dtbo-$(CONFIG_ARCH_WAIPIO) += monroe_22091-camera-waipio-overlay.dtbo
 dtbo-$(CONFIG_ARCH_WAIPIO) += monroe_22091-camera-waipio-overlay-preT0.dtbo
+
+dtbo-y := $(strip $(call oplus-dtb-uniq,$(filter $(foreach family,$(oplus-dtb-selected),$(oplus-camera-dtbo-$(family))),$(dtbo-y))))
+dtb-y :=
 
 always-y    := $(dtb-y) $(dtbo-y)
 subdir-y    := $(dts-dirs)

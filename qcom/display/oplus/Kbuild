@@ -1,3 +1,11 @@
+include $(srctree)/$(src)/../../../oplus/dtb-selection.mk
+
+oplus-display-dtbo-OVALTINE := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../display/cape-sde.dtbo ovaltine-21841-display-cape-overlay.dtbo)
+oplus-display-dtbo-SENNA := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../display/cape-sde.dtbo senna-22623-display-cape-overlay.dtbo senna-22624-display-cape-overlay.dtbo senna-22625-display-cape-overlay.dtbo)
+oplus-display-dtbo-UDON := $(if $(filter y,$(CONFIG_ARCH_CAPE)),../display/cape-sde.dtbo udon-22803-display-cape-overlay.dtbo)
+oplus-display-dtbo-FERRARI := $(if $(filter y,$(CONFIG_ARCH_WAIPIO)),../display/waipio-sde.dtbo ferrari-21631-display-waipio-overlay.dtbo)
+oplus-display-dtbo-WLY := $(if $(filter y,$(CONFIG_ARCH_WAIPIO)),../display/waipio-sde.dtbo wly-20846-display-waipio-overlay.dtbo)
+
 dtbo-$(CONFIG_ARCH_CAPE) += ../display/cape-sde.dtbo
 dtbo-$(CONFIG_ARCH_DIWALI) += ../display/diwali-sde.dtbo
 dtbo-$(CONFIG_ARCH_WAIPIO) += ../display/waipio-sde.dtbo
@@ -17,6 +25,9 @@ dtbo-y += senna-22624-display-cape-overlay.dtbo
 dtbo-y += senna-22625-display-cape-overlay.dtbo
 dtbo-y += monroe-22091-display-cape-overlay.dtbo
 dtbo-y += daoxiang-23023-display-cape-overlay.dtbo
+
+dtbo-y := $(strip $(call oplus-dtb-uniq,$(filter $(foreach family,$(oplus-dtb-selected),$(oplus-display-dtbo-$(family))),$(dtbo-y))))
+dtb-y :=
 
 always-y	:= $(dtbo-y) $(dtb-y)
 subdir-y	:= $(dts-dirs)
