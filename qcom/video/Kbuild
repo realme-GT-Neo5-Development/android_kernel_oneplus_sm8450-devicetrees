@@ -1,3 +1,5 @@
+include $(srctree)/$(src)/../../oplus/dtb-selection.mk
+
 ifeq ($(CONFIG_ARCH_WAIPIO), y)
 dtbo-y += waipio-vidc.dtbo
 endif
@@ -33,6 +35,11 @@ endif
 
 ifeq ($(CONFIG_ARCH_MONACO), y)
 dtbo-y += monaco-vidc.dtbo
+endif
+
+ifneq ($(oplus-dtb-opt-out),)
+dtbo-y := $(filter waipio-vidc.dtbo ukee-vidc.dtbo,$(dtbo-y))
+dtb-y :=
 endif
 
 always-y    := $(dtb-y) $(dtbo-y)

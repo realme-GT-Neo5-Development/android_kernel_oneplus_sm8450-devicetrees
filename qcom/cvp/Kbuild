@@ -1,4 +1,11 @@
+include $(srctree)/$(src)/../../oplus/dtb-selection.mk
+
 dtbo-y += diwali-cvp.dtbo
+
+ifneq ($(oplus-dtb-opt-out),)
+dtbo-y :=
+dtb-y :=
+endif
 
 always-y	:= $(dtb-y) $(dtbo-y)
 subdir-y	:= $(dts-dirs)

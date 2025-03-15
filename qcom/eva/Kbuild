@@ -1,3 +1,5 @@
+include $(srctree)/$(src)/../../oplus/dtb-selection.mk
+
 ifeq ($(CONFIG_ARCH_WAIPIO), y)
 dtbo-y += waipio-eva.dtbo
 endif
@@ -5,6 +7,11 @@ endif
 ifeq ($(CONFIG_ARCH_CAPE), y)
 dtbo-y += ukee-eva.dtbo
 dtbo-y += cape-eva.dtbo
+endif
+
+ifneq ($(oplus-dtb-opt-out),)
+dtbo-y := $(filter cape-eva.dtbo ukee-eva.dtbo waipio-eva.dtbo,$(dtbo-y))
+dtb-y :=
 endif
 
 always-y	:= $(dtb-y) $(dtbo-y)
