@@ -3,7 +3,12 @@
 #include "oplus_chg_22624.h"
 #include "oplus-chg-22624-fw.dtsi"
 
+//#ifdef OPLUS_FEATURE_CHG_BASIC
 &soc {
+	oplus_battery_log: oplus,battery_log {
+		compatible = "oplus,battery_log";
+		oplus,battery_log_support;
+	};
 	oplus,adsp-voocphy {
 		compatible = "oplus,adsp-voocphy";
 	};
@@ -53,6 +58,7 @@
 	oplus,chg_ops = "plat-pmic";
 	qcom,smart_charging_screenoff;
 	qcom,voocphy_support = <1>;
+	oplus,common-charge-icl-support;
 	qcom,input_current_charger_ma = <2000>;
 	qcom,pd_input_current_charger_ma = <2000>;
 	qcom,qc_input_current_charger_ma = <2000>;
@@ -278,7 +284,7 @@
 	oplus,reserve_chg_soc = <2>;
 	oplus,reserve_dis_soc = <2>;
 	qcom,smart_chg_soh_support;
-	oplus,aging_ffc_version = <1>;
+	oplus_spec,dec-vol-fv-mv = <40>;
 	oplus,quick_mode_gain_support;
 	qcom,support_usbtemp_protect_v2;
 
@@ -1184,6 +1190,7 @@
 //#endif OPLUS_FEATURE_CHG_BASIC
 
 
+//#ifdef OPLUS_FEATURE_CHG_BASIC
 &battery_charger {
 	oplus,ic_type = <OPLUS_CHG_IC_BUCK>;
 	oplus,ic_index = <0>;

@@ -1,6 +1,11 @@
 #include "oplus_chg_22623.h"
 
 &soc {
+	oplus_battery_log: oplus,battery_log {
+		compatible = "oplus,battery_log";
+		oplus,battery_log_support;
+	};
+
 	oplus,adsp-voocphy {
 		status = "disabled";
 		compatible = "oplus,adsp-voocphy";
@@ -60,6 +65,7 @@
 	oplus,chg_ops = "plat-pmic";
 	qcom,smart_charging_screenoff;
 	qcom,voocphy_support = <2>;
+	oplus,common-charge-icl-support;
 	qcom,input_current_charger_ma = <2000>;
 	qcom,pd_input_current_charger_ma = <2000>;
 	qcom,qc_input_current_charger_ma = <2000>;
@@ -260,7 +266,7 @@
 	qcom,smart_chg_bcc_support;
 	//for smart charge end
 	qcom,smart_chg_soh_support;
-	oplus,aging_ffc_version = <1>;
+	oplus_spec,dec-vol-fv-mv = <40>;
 	oplus,quick_mode_gain_support;
 	qcom,vooc_show_ui_soc_decimal;
 	qcom,ui_soc_decimal_speedmin = <20>;//2A

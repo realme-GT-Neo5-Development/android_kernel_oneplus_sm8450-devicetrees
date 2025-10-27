@@ -137,12 +137,12 @@
 		};
 		/*virtual sensor
 		enum sensor_algo_id {
-			OPLUS_PICKUP_DETECT,
-			OPLUS_LUX_AOD,
-			OPLUS_TP_GESTURE,
-			OPLUS_FP_DISPLAY,
-			OPLUS_FREE_FALL,
-			OPLUS_CAMERA_PROTECT,
+			OPPO_PICKUP_DETECT,
+			OPPO_LUX_AOD,
+			OPPO_TP_GESTURE,
+			OPPO_FP_DISPLAY,
+			OPPO_FREE_FALL,
+			OPPO_CAMERA_PROTECT,
 			SENSOR_ALGO_NUM
 		}*/
 		pickup_detect {
